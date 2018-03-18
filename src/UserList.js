@@ -1,37 +1,30 @@
 import React from 'react';
-import store, { getUsersFromServer } from './store';
-import axios from 'axios';
+import store from './store';
 
 export default class UserList extends React.Component{
 
     constructor(){
         super()
-        this.state = store.getState();
-        this.getUsers = this.getUsers.bind(this)
+        this.state = store.getState()
+       
     };
 
 
-    getUsers(){
-        axios.get('/api/users')
-            .then(res => res.data)
-            .then(users => store.dispatch(getUsersFromServer(users)));
-    }
+    
     componentDidMount(){
         this.unsubscribe = store.subscribe(()=>{
             this.setState(store.getState())
         });
-        this.getUsers();
     };
     componentWillUnmount(){
         this.unsubscribe()
     };
 
     render(){
-        console.log(store.getState())
+        const { users } = this.state
         return(
             <ul>
-
-
+                { users.map(user=><li key={user.id}>{user.name}</li>) }
             </ul>
         )
     }

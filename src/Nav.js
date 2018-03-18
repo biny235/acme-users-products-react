@@ -5,7 +5,7 @@ const Nav = (props)=>{
         <ul>
             <li><Link to='/'> Users </Link></li>
             <li><Link to='/'> Products </Link></li>
-            <li><Link to='/'> Create User </Link></li>
+            <li><Link to='/createuser'> Create User </Link></li>
         </ul>
     )
 };

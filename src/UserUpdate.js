@@ -40,7 +40,7 @@ export default class UserUpdate extends React.Component{
             .then(res => res.data)
             .then(user =>{
                 store.dispatch(addUser(user))
-                document.location = '/'
+                location.hash = '/'
             })
     };
 
@@ -49,7 +49,7 @@ export default class UserUpdate extends React.Component{
             .then(res => res.data)
             .then(user =>{
                 store.dispatch(editUser(user))
-                document.location = '/'
+                location.hash = '/'
             })
     }
  

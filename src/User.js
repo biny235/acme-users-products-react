@@ -1,5 +1,5 @@
 import React from 'react';
-import store, { selectUser, resetSelect } from './store';
+import store, { selectUser, resetSelect, deleteUser } from './store';
 import UserUpdate from './UserUpdate';
 import axios from 'axios';
 
@@ -18,10 +18,16 @@ export default class User extends React.Component {
         this.unsubscribe = store.subscribe(()=>{
             this.setState(store.getState());
         });
-
-       store.dispatch(selectUser(this.findUser(location.hash.split('/')[2])));
+        store.dispatch(selectUser(this.findUser(location.hash.split('/')[2])));
+       
     };
- 
+    componentDidUpdate(prevProps, prevState){
+        
+        if(!this.state.selectedUser){
+            console.log('in if')
+            store.dispatch(selectUser(this.findUser(location.hash.split('/')[2])));
+        }
+    }
     componentWillUnmount(){
         this.unsubscribe();
         store.dispatch(resetSelect());
@@ -30,7 +36,10 @@ export default class User extends React.Component {
     onClick(ev){
         const {selectedUser} = this.state;
         axios.delete(`/api/users/${selectedUser.id}`)
-            .then(()=>document.location = '/')
+            .then(()=>{
+                store.dispatch(deleteUser(selectedUser.id))
+                document.location.hash = '/'
+            })
     };
     
     render(){

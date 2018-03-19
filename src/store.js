@@ -6,6 +6,7 @@ const ADD_USER = 'ADD_USER';
 const SELECT_USER = 'SELECT_USER';
 const RESET_SELECT = 'RESET_SELECT';
 const EDIT_USER = 'EDIT_USER';
+const DELETE_USER = 'DELETE_USER';
 
 
 const getUsersFromServer = (users)=>{
@@ -21,6 +22,13 @@ const storeName = (name)=>{
         name: name
     }
 };
+
+const deleteUser = (id)=>{
+    return{
+        type: DELETE_USER,
+        id: id
+    }
+}
 
 const resetSelect = ()=>{
     return{
@@ -73,7 +81,12 @@ const reducer = (state = initialState, action)=>{
             return Object.assign({}, state, { selectedUser: '', name: '' })
             break;
         case EDIT_USER:
-            return state
+            return Object.assign({}, state, {users: state.users.map(user=>{
+                return user.id === action.user.id ? action.user.name : user.name
+            }) , selectedUser: '', name: '' })
+            break;
+        case DELETE_USER:
+            return Object.assign({}, state, {users: state.users.filter(user=> user.id !== action.id * 1)})
         default:
             return state;
     };
@@ -82,4 +95,4 @@ const reducer = (state = initialState, action)=>{
 
 const store = createStore(reducer);
 export default store;
-export { getUsersFromServer, storeName, addUser, selectUser, resetSelect, editUser };
+export { getUsersFromServer, storeName, addUser, selectUser, resetSelect, editUser, deleteUser };

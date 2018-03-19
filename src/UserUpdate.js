@@ -55,7 +55,7 @@ export default class UserUpdate extends React.Component{
  
     render(){
         const { prevDef, changeName, handleSubmit } = this;
-        const { selectedUser, name } = this.state
+        const { selectedUser, name } = this.state;
         return(
             <form onSubmit={prevDef}>
                 <input onChange={ changeName } name='name' value={ name } placeholder='Input user name' />

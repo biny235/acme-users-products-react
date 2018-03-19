@@ -1,5 +1,6 @@
 import React from 'react';
 import store from './store';
+import  { Link } from 'react-router-dom'
 
 export default class UserList extends React.Component{
 
@@ -9,8 +10,6 @@ export default class UserList extends React.Component{
        
     };
 
-
-    
     componentDidMount(){
         this.unsubscribe = store.subscribe(()=>{
             this.setState(store.getState())
@@ -24,7 +23,7 @@ export default class UserList extends React.Component{
         const { users } = this.state
         return(
             <ul>
-                { users.map(user=><li key={user.id}>{user.name}</li>) }
+                { users.map(user=><li key={user.id}><Link to={`/users/${user.id}`}>{user.name}</Link></li>) }
             </ul>
         )
     }

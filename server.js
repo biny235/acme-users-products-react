@@ -6,6 +6,7 @@ const app = express();
 
 app.use(require('body-parser').json())
 
+
 db.syncAndSeed()
     .then(()=>{console.log('seeded')})
 
@@ -20,12 +21,31 @@ app.get('/api/users', (req, res, next)=>{
 });
 
 app.post('/api/users', (req, res, next)=>{
-    console.log(req.body)
     User.create(req.body)
         .then(user => res.send(user))
         .catch(next);
 });
 
+app.patch('/api/users/:id', (req, res, next)=>{
+    console.log(req.body)
+    User.findById(req.params.id)
+        .then(user => {
+            user = Object.assign(user, req.body);
+            return user.save()
+        })
+        .then(user => res.send(user))
+        .catch(next)
+});
+app.delete('/api/users/:id', (req, res, next)=>{
+    User.findById(req.params.id)
+        .then(user=>{
+            return user.destroy()
+        })
+        .then(()=>{
+            res.sendStatus(204)
+        })
+        .catch(next);
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, ()=>{console.log(`Listening on port ${port}`)});

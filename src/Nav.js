@@ -1,11 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+
+
+
 const Nav = (props)=>{
+    const path = props.location.pathname
     return(
         <ul>
-            <li><Link to='/'> Users </Link></li>
-            <li><Link to='/'> Products </Link></li>
-            <li><Link to='/createuser'> Create User </Link></li>
+            <li>{ path === '/' ? 
+                <span>Users</span>
+                :
+                <NavLink to='/'> Users </NavLink>
+            }</li>
+            <li>{ path === '/products' ? 
+                <span>Products</span>
+                :
+                <NavLink to='/'> Products </NavLink>
+            }</li>
+            <li>{ path === '/createuser' ? 
+                <span>Create User</span>
+                :
+                <NavLink to='/createuser'> Create User </NavLink>
+            }</li>
         </ul>
     )
 };

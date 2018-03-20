@@ -17,6 +17,9 @@ export default class UserUpdate extends React.Component{
             this.setState(store.getState());
         })
 
+        this.props.location.pathname === '/createuser' ? 
+            store.dispatch(storeName('')) :
+            null
     };
     prevDef(ev){
         ev.preventDefault()

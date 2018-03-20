@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import logger from 'redux-logger';
 import axios from 'axios';
 
 const GET_USERS_FROM_SERVER = 'GET_USERS_FROM_SERVER';
@@ -107,7 +106,7 @@ const reducer = (state = initialState, action)=>{
 const store = createStore(
     reducer, 
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), 
-    applyMiddleware(logger, thunkMiddleware)
+    applyMiddleware(thunkMiddleware)
 );
 export default store;
 export { getUsersFromServer, storeName, addUser, selectUser, resetSelect, editUser, deleteUser, getUsers };

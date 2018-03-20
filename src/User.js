@@ -19,9 +19,11 @@ export default class User extends React.Component {
         this.unsubscribe = store.subscribe(()=>{
             this.setState(store.getState());
         });
-
+        this.state.users.length === 0 ?
         store.dispatch(getUsers())
             .then(()=>store.dispatch(selectUser(this.findUser(location.hash.split('/')[2])))) 
+            :
+            store.dispatch(selectUser(this.findUser(location.hash.split('/')[2])))
     };
     componentWillUnmount(){
         this.unsubscribe();
@@ -43,9 +45,10 @@ export default class User extends React.Component {
         
         const { selectedUser } = this.state;
         const { onClick } = this;
+        const { location } = this.props;
         return(
             <div>
-                <UserUpdate user={ selectedUser }/>
+                <UserUpdate location={location }user={ selectedUser }/>
                 <button onClick={onClick}> DELETE </button>
             </div>
         )

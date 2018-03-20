@@ -23,7 +23,7 @@ export default class Main extends React.Component{
     };
 
     componentWillUnmount(){
-        this.unsubscribe()
+        this.unsubscribe();
     };
 
     render(){
@@ -34,8 +34,8 @@ export default class Main extends React.Component{
                     <div>
                         <Route component={ Nav } />
                         <Route exact path='/' render={()=> <UserList /> } />
-                        <Route path='/createuser' render={()=> <UserUpdate /> } />
-                        <Route exact path='/users/:id' render={()=> <User /> } />
+                        <Route path='/createuser' render={({location})=> <UserUpdate location={location}/> } />
+                        <Route exact path='/users/:id' render={({location})=> <User location={location}/> } />
                     </div> 
                 </Router>
 

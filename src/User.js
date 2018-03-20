@@ -1,5 +1,5 @@
 import React from 'react';
-import store, { selectUser, resetSelect, deleteUser } from './store';
+import store, { selectUser, resetSelect, deleteUser, getUsers} from './store';
 import UserUpdate from './UserUpdate';
 import axios from 'axios';
 
@@ -15,23 +15,20 @@ export default class User extends React.Component {
     };
 
     componentDidMount(){
+        
         this.unsubscribe = store.subscribe(()=>{
             this.setState(store.getState());
         });
-        store.dispatch(selectUser(this.findUser(location.hash.split('/')[2])));
-       
+
+        store.dispatch(getUsers())
+            .then(()=>store.dispatch(selectUser(this.findUser(location.hash.split('/')[2])))) 
     };
-    componentDidUpdate(prevProps, prevState){
-        
-        if(!this.state.selectedUser){
-            console.log('in if')
-            store.dispatch(selectUser(this.findUser(location.hash.split('/')[2])));
-        }
-    }
     componentWillUnmount(){
         this.unsubscribe();
         store.dispatch(resetSelect());
     };
+
+
 
     onClick(ev){
         const {selectedUser} = this.state;
@@ -43,6 +40,7 @@ export default class User extends React.Component {
     };
     
     render(){
+        
         const { selectedUser } = this.state;
         const { onClick } = this;
         return(

@@ -1,4 +1,7 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import logger from 'redux-logger';
+import axios from 'axios';
 
 const GET_USERS_FROM_SERVER = 'GET_USERS_FROM_SERVER';
 const STORE_NAME = 'STORE_NAME';
@@ -8,6 +11,14 @@ const RESET_SELECT = 'RESET_SELECT';
 const EDIT_USER = 'EDIT_USER';
 const DELETE_USER = 'DELETE_USER';
 
+
+const getUsers = ()=>{
+    return (dispatch)=>{
+        return axios.get('/api/users')
+            .then(res => res.data)
+            .then(users => dispatch(getUsersFromServer(users)));
+    }
+}
 
 const getUsersFromServer = (users)=>{
     return {
@@ -75,13 +86,13 @@ const reducer = (state = initialState, action)=>{
             return Object.assign({}, state, { users: [...state.users, action.user], name: '' })
             break;
         case SELECT_USER:
-            return Object.assign({}, state, { selectedUser: action.user, name: action.user.name })
+            return Object.assign({}, state, {name: action.user.name} , { selectedUser: action.user})
             break;
         case RESET_SELECT:
             return Object.assign({}, state, { selectedUser: '', name: '' })
             break;
         case EDIT_USER:
-            return Object.assign({}, state, {users: state.users.map(user=>{
+            return Object.assign({}, state, { users: state.users.map(user=>{
                 return user.id === action.user.id ? action.user.name : user.name
             }) , selectedUser: '', name: '' })
             break;
@@ -93,6 +104,10 @@ const reducer = (state = initialState, action)=>{
 
 };
 
-const store = createStore(reducer);
+const store = createStore(
+    reducer, 
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), 
+    applyMiddleware(logger, thunkMiddleware)
+);
 export default store;
-export { getUsersFromServer, storeName, addUser, selectUser, resetSelect, editUser, deleteUser };
+export { getUsersFromServer, storeName, addUser, selectUser, resetSelect, editUser, deleteUser, getUsers };

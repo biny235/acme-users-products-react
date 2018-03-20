@@ -1,5 +1,5 @@
 import React from 'react';
-import store from './store';
+import store, { getUsers } from './store';
 import  { Link } from 'react-router-dom'
 
 export default class UserList extends React.Component{
@@ -10,14 +10,19 @@ export default class UserList extends React.Component{
        
     };
 
-    componentDidMount(){
+     componentDidMount(){
         this.unsubscribe = store.subscribe(()=>{
             this.setState(store.getState())
         });
+        store.dispatch(getUsers())
+
     };
+
     componentWillUnmount(){
         this.unsubscribe()
     };
+    
+
 
     render(){
         const { users } = this.state

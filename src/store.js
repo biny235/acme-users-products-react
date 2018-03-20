@@ -3,6 +3,7 @@ import thunkMiddleware from 'redux-thunk';
 import axios from 'axios';
 
 const GET_USERS_FROM_SERVER = 'GET_USERS_FROM_SERVER';
+const GET_PRODUCTS_FROM_SERVER = 'GET_PRODUCTS_FROM_SERVER';
 const STORE_NAME = 'STORE_NAME';
 const ADD_USER = 'ADD_USER';
 const SELECT_USER = 'SELECT_USER';
@@ -17,7 +18,14 @@ const getUsers = ()=>{
             .then(res => res.data)
             .then(users => dispatch(getUsersFromServer(users)));
     }
-}
+};
+const getProducts= ()=>{
+    return (dispatch)=>{
+        return axios.get('/api/products')
+            .then(res => res.data)
+            .then(products => dispatch(getProductsFromServer(products)));
+    }
+};
 
 const getUsersFromServer = (users)=>{
     return {
@@ -25,6 +33,13 @@ const getUsersFromServer = (users)=>{
         users: users
     };
 };
+
+const getProductsFromServer =  (products)=>{
+    return{
+        type: GET_PRODUCTS_FROM_SERVER,
+        products: products
+    }
+}
 
 const storeName = (name)=>{
     return{
@@ -68,6 +83,7 @@ const editUser = (user)=>{
 
 const initialState = {
     users: [],
+    products: [],
     name: '',
     selectedUser: ''
 };
@@ -78,6 +94,9 @@ const reducer = (state = initialState, action)=>{
         case GET_USERS_FROM_SERVER:
             return Object.assign({}, state, action.users)
             break;
+        case GET_PRODUCTS_FROM_SERVER:
+            return Object.assign({}, state, action.products)
+            break;
         case STORE_NAME:
             return Object.assign({}, state, { name: action.name })
             break;
@@ -85,7 +104,7 @@ const reducer = (state = initialState, action)=>{
             return Object.assign({}, state, { users: [...state.users, action.user], name: '' })
             break;
         case SELECT_USER:
-            return Object.assign({}, state, {name: action.user.name} , { selectedUser: action.user})
+            return Object.assign({}, state, {name: action.user.name, selectedUser: action.user})
             break;
         case RESET_SELECT:
             return Object.assign({}, state, { selectedUser: '', name: '' })
@@ -109,4 +128,14 @@ const store = createStore(
     applyMiddleware(thunkMiddleware)
 );
 export default store;
-export { getUsersFromServer, storeName, addUser, selectUser, resetSelect, editUser, deleteUser, getUsers };
+export { 
+    getUsersFromServer, 
+    storeName, 
+    addUser, 
+    selectUser, 
+    resetSelect, 
+    editUser, 
+    deleteUser, 
+    getUsers, 
+    getProducts 
+    };

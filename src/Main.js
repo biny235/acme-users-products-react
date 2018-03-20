@@ -6,6 +6,7 @@ import store, { getUsersFromServer, getUsers }  from './store';
 import UserUpdate from './UserUpdate';
 import axios from 'axios';
 import User from './User';
+import ProductList from './ProductList';
 
 export default class Main extends React.Component{
 
@@ -36,6 +37,7 @@ export default class Main extends React.Component{
                         <Route exact path='/' render={()=> <UserList /> } />
                         <Route path='/createuser' render={({location})=> <UserUpdate location={location}/> } />
                         <Route exact path='/users/:id' render={({location})=> <User location={location}/> } />
+                        <Route exact path='/products' render={()=> <ProductList /> } />
                     </div> 
                 </Router>
 

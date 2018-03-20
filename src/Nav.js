@@ -15,7 +15,7 @@ const Nav = (props)=>{
             <li>{ path === '/products' ? 
                 <span>Products</span>
                 :
-                <NavLink to='/'> Products </NavLink>
+                <NavLink to='/products'> Products </NavLink>
             }</li>
             <li>{ path === '/createuser' ? 
                 <span>Create User</span>

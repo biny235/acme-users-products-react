@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const db = require('./db');
-const { User } = db.models;
+const { User, Product } = db.models;
 const app = express();
 
 app.use(require('body-parser').json())
@@ -17,6 +17,12 @@ app.get('/', (req, res, next)=> res.sendFile(path.join(__dirname,'dist', 'index.
 app.get('/api/users', (req, res, next)=>{
     User.findAll()
         .then(users => res.send({ users }))
+        .catch(next);
+});
+
+app.get('/api/products', (req, res, next)=>{
+    Product.findAll()
+        .then(products => res.send({ products }))
         .catch(next);
 });
 
@@ -36,6 +42,7 @@ app.patch('/api/users/:id', (req, res, next)=>{
         .then(user => res.send(user))
         .catch(next)
 });
+
 app.delete('/api/users/:id', (req, res, next)=>{
     User.findById(req.params.id)
         .then(user=>{
